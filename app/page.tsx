@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <main>
       <h1>Bienvenue dans mon app Next.js !</h1>
+      <div>test</div>
     </main>
   );
 }
