@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { sequelize } from "@/lib/db"
 import { User } from "@/lib/models/User"
 import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
+import { cookies } from "next/headers"
+import { signToken } from '@/lib/auth'
 
 const JWT_SECRET = process.env.JWT_SECRET!
 
@@ -32,17 +33,25 @@ export async function POST(request: Request) {
       password: hashedPassword,
       role: "user",
       loyaltyPoints: 0,
-      qrCodeValue: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     })
 
-    const token = jwt.sign(
-      { sub: newUser.id, email: newUser.email, role: newUser.role },
-      JWT_SECRET,
-      { expiresIn: "7d" }
-    )
+    newUser.qrCodeValue = `user-${newUser.id}`
+    await newUser.save()
+
+
+    const token = signToken({ sub: newUser.id, email: newUser.email, role: newUser.role })
 
     const { password: _, ...userData } = newUser.get()
-    //const { ...userWithoutPassword } = newUser
+
+    const cookieStore = await cookies()
+    cookieStore.set({
+      name: 'token',
+      value: token,
+      httpOnly: true,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
+      secure: true,
+    })
 
     return NextResponse.json(
       { message: "Inscription réussie", user: userData, token },

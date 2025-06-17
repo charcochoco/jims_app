@@ -26,27 +26,29 @@ const AuthContext = createContext<AuthContextProps>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
 
-  useEffect(() => {
-    const token = localStorage.getItem("jwt_token")
-    const userInfo = localStorage.getItem("user_info")
-
-    if (token && userInfo) {
-      const parsedUser = JSON.parse(userInfo)
-      setUser(parsedUser)
+    useEffect(() => {
+    const fetchUser = async () => {
+        try {
+        const res = await fetch("/api/auth/me", { method: "GET", credentials: "include" })
+        if (!res.ok) throw new Error("Non connecté")
+        const user = await res.json()
+        setUser(user)
+        } catch {
+        setUser(null)
+        }
     }
-  }, [])
+
+    fetchUser()
+    }, [])
     
   const login = (user: User, token: string) => {
-    localStorage.setItem("jwt_token", token)
-    localStorage.setItem("user_info", JSON.stringify(user))
     setUser(user)
   }
 
-  const logout = () => {
-    localStorage.removeItem("jwt_token")
-    localStorage.removeItem("user_info")
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" })
     setUser(null)
-    window.location.href = "/" // Ou router.push('/')
+    window.location.href = "/login"
   }
 
   return (
