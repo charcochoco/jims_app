@@ -14,16 +14,30 @@ export default function StyledQRCode({ value, size = 128, withDownload = false }
   const qrCodeRef = useRef<QRCodeStyling | null>(null)
 
   useEffect(() => {
+    // const qrCode = new QRCodeStyling({
+    //   width: size,
+    //   height: size,
+    //   type: "svg",
+    //   data: value,
+    //   dotsOptions: { color: "#000000", type: "square" },
+    //   backgroundOptions: { color: "#ffffff" },
+    //   imageOptions: { margin: 0 },
+    // })
+
     const qrCode = new QRCodeStyling({
       width: size,
       height: size,
       type: "svg",
       data: value,
-      image: "/icons/icon-192x192.png",
-      dotsOptions: { color: "#FFA500", type: "rounded" },
+      dotsOptions: { color: "#000000", type: "square" }, // tu peux tester "rounded" après
       backgroundOptions: { color: "#ffffff" },
-      imageOptions: { crossOrigin: "anonymous", margin: 5 },
+      image: "/icons/icon-192x192.png",
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 5, // augmente si besoin
+      },
     })
+
 
     qrCodeRef.current = qrCode
     ref.current && qrCode.append(ref.current)

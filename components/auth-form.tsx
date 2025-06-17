@@ -59,7 +59,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       // Redirect after successful login/registration
       if (mode === "login") {
         if (data.user.role === "admin") {
-          router.push("/admin")
+          router.push("/admin/home")
         } else {
           router.push("/account")
         }
