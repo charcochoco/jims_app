@@ -60,7 +60,7 @@ export default function QRScanner() {
   }
 
   return (
-    <div className="p-4 border rounded-md space-y-4">
+    <div className="p-4 border rounded-md space-y-4" style={{ width: "100%" }}>
       <QRBarcodeScanner
         width={500}
         height={500}
@@ -71,7 +71,6 @@ export default function QRScanner() {
             console.error(err)
           }
         }}
-        containerStyle={{ width: "100%" }}
       />
 
       {loading && (
