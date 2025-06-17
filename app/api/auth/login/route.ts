@@ -5,8 +5,6 @@ import bcrypt from "bcryptjs"
 import { cookies } from "next/headers"
 import { signToken } from '@/lib/auth'
 
-const JWT_SECRET = process.env.JWT_SECRET!
-
 export async function POST(request: Request) {
   try {
     await sequelize.sync() 
@@ -27,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Identifiants invalides." }, { status: 401 });
     }
 
-    const token = signToken({ sub: user.id, email: user.email, role: user.role })
+    const token = await signToken({ sub: user.id, email: user.email, role: user.role })
 
     const { password: _, ...userWithoutPassword } = user.get()
 

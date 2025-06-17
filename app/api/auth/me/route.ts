@@ -4,8 +4,6 @@ import { verifyToken } from '@/lib/auth'
 import { User } from "@/lib/models/User"
 import { sequelize } from "@/lib/db"
 
-const JWT_SECRET = process.env.JWT_SECRET!
-
 export async function GET() {
   try {
     const cookieStore = await cookies()
@@ -15,7 +13,7 @@ export async function GET() {
       return NextResponse.json({ message: "Non authentifié." }, { status: 401 })
     }
 
-    const payload = token && verifyToken(token)
+    const payload = token && await verifyToken(token)
 
     if (!payload) {
       return NextResponse.json({ user: null }, { status: 401 })
