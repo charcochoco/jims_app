@@ -11,12 +11,20 @@ export default function Footer() {
         </div>
         <p className="text-sm">&copy; {new Date().getFullYear()} Jim&apos;s Snacking. Tous droits réservés.</p>
         <div className="mt-2 text-sm">
+          <Link href="/legal-information" className="hover:text-orange-500 transition-colors">
+            Mentions légales
+          </Link>
+          {" | "}
           <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors">
             Politique de confidentialité
           </Link>
           {" | "}
           <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors">
             Conditions d&apos;utilisation
+          </Link>
+          {" | "}
+          <Link href="/cookies" className="hover:text-orange-500 transition-colors">
+            Politique de cookies
           </Link>
         </div>
       </div>

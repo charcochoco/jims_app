@@ -10,12 +10,15 @@ import { useAuth } from "@/hooks/auth-context"
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isLoggedIn, isAdmin, logout } = useAuth()
-
+  // console.log("isLoggedIn : ",isLoggedIn)
+  // console.log("isAdmin : ",isAdmin)
   const navLinks = [
     { href: "/", label: "Accueil" },
     { href: "/menu", label: "Menu" },
+    { href: "/apropos", label: "A propos" },
+    { href: "/contact", label: "Contact" },
     ...(isLoggedIn ? [{ href: "/account", label: "Mon Compte" }] : [{ href: "/login", label: "Connexion" }]),
-    ...(isLoggedIn && isAdmin ? [{ href: "/admin", label: "Admin" }] : []),
+    ...(isLoggedIn && isAdmin ? [{ href: "/admin/home", label: "Admin" }] : []),
   ]
 
   return (

@@ -4,7 +4,20 @@ export default function Home() {
   return (
     <main>
       <h1>Bienvenue dans mon app Next.js !</h1>
-      <div>test dev</div>
+      <ul>
+        <li>
+          Présentation du restaurant
+        </li>
+         <li>
+          Spécialités
+        </li>
+         <li>
+          Horaires
+        </li>
+         <li>
+          Lieu
+        </li>
+      </ul>
     </main>
   );
 }
