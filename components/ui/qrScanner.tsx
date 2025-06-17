@@ -71,6 +71,7 @@ export default function QRScanner() {
             console.error(err)
           }
         }}
+        containerStyle={{ width: "100%" }}
       />
 
       {loading && (
