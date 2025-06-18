@@ -6,6 +6,8 @@ import { sequelize } from "@/lib/db"
 
 export async function GET() {
   try {
+    await sequelize.sync()
+    
     const cookieStore = await cookies()
     const token = cookieStore.get("token")?.value
 
@@ -20,8 +22,6 @@ export async function GET() {
     } 
   
     const userId = payload.sub
-
-    await sequelize.sync()
 
     const user = await User.findByPk(userId)
 

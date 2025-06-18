@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { UserIcon, Award, QrCode, Edit3, ShieldAlert, Loader2, X } from "lucide-react"
 import StyledQRCode from "@/components/ui/QRcode"
+import RegisterPush from "../../components/register-push"
 
 export default function AccountPage() {
   const router = useRouter()
@@ -31,6 +32,7 @@ export default function AccountPage() {
         }
 
         const data = await res.json()
+        
         setUser(data.user)
       } catch {
         setError("Erreur lors du chargement.")
@@ -144,6 +146,7 @@ export default function AccountPage() {
           </Button>
         </CardContent>
       </Card>
+      {user && user.notifications && <RegisterPush userId={user.id} />}
     </div>
   )
 }

@@ -3,12 +3,15 @@ import { sequelize } from "../db"
 
 export class User extends Model {
   id!: string
-  name!: string
+  lastName!: string
+  firstName!: string
   email!: string
   password!: string
   role!: string
   loyaltyPoints!: number
   qrCodeValue!: string
+  notifications!: boolean
+  emailVerified!: boolean
 }
 
 User.init(
@@ -18,12 +21,47 @@ User.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    name: DataTypes.STRING,
-    email: { type: DataTypes.STRING, unique: true },
-    password: DataTypes.STRING,
-    role: { type: DataTypes.STRING, defaultValue: "user" },
-    loyaltyPoints: { type: DataTypes.INTEGER, defaultValue: 0 },
-    qrCodeValue: DataTypes.STRING,
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "user",
+      allowNull: false,
+    },
+    loyaltyPoints: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+    },
+    qrCodeValue: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: true,
+    },
+    notifications: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     sequelize,

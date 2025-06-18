@@ -3,14 +3,13 @@ import { User } from "@/lib/models/User"
 import { sequelize } from "@/lib/db"
 
 export async function GET(req: Request) {
+  await sequelize.sync()
   const { searchParams } = new URL(req.url)
   const code = searchParams.get("code")
 
   if (!code) {
     return NextResponse.json({ message: "QR code manquant." }, { status: 400 })
   }
-
-  await sequelize.sync()
 
   const user = await User.findOne({ where: { qrCodeValue: code } })
 

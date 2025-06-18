@@ -7,8 +7,8 @@ import { signToken } from '@/lib/auth'
 
 export async function POST(request: Request) {
   try {
-    await sequelize.sync() 
-
+    await sequelize.sync()
+    
     const { email, password } = await request.json()
 
     if (!email || !password) {
