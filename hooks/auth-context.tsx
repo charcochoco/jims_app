@@ -29,12 +29,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
     const fetchUser = async () => {
         try {
-        const res = await fetch("/api/auth/me", { method: "GET", credentials: "include" })
-        if (!res.ok) throw new Error("Non connecté")
-        const user = await res.json()
-        setUser(user)
+            const res = await fetch("/api/auth/me", { method: "GET", credentials: "include" })
+            if (!res.ok) throw new Error("Non connecté")
+            const data = await res.json()
+            setUser(data.user)
         } catch {
-        setUser(null)
+            setUser(null)
         }
     }
 

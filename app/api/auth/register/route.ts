@@ -7,11 +7,11 @@ import { signToken } from '@/lib/auth'
 
 export async function POST(request: Request) {
   try {
-    await sequelize.sync() 
+    await sequelize.sync()
 
-    const { name, email, password } = await request.json()
+    const { firstName, lastName, email, password, acceptNotifications } = await request.json()
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !acceptNotifications) {
       return NextResponse.json({ message: "Nom, email et mot de passe sont requis." }, { status: 400 })
     }
     if (password.length < 8) {
@@ -26,11 +26,13 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const newUser = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
-      role: "user",
+      role: "admin",
       loyaltyPoints: 0,
+      notifications: acceptNotifications,
     })
 
     newUser.qrCodeValue = `user-${newUser.id}`

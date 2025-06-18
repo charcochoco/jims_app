@@ -26,9 +26,10 @@ export default function QRScanner() {
       if (!res.ok) throw new Error("Utilisateur non trouvé.")
       const json = await res.json()
       setUser(json.user)
+      
       toast({
         title: "Utilisateur trouvé",
-        description: `${json.user.name} (${json.user.email})`,
+        description: `${json.user.firstName} ${json.user.lastName} (${json.user.email})`,
       })
     } catch (err: any) {
       toast({ title: "Erreur", description: err.message, variant: "destructive" })
@@ -82,7 +83,7 @@ export default function QRScanner() {
 
       {user && (
         <div className="space-y-2">
-          <p>👤 <strong>{user.name}</strong> ({user.email})</p>
+          <p>👤 <strong>{user.firstName} {user.lastName}</strong> ({user.email})</p>
           <p>🎁 Points actuels : <strong>{user.loyaltyPoints}</strong></p>
 
           <div className="flex space-x-2 items-center">
