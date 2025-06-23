@@ -8,7 +8,7 @@ import { signToken } from '@/lib/auth'
 export async function POST(request: Request) {
   try {
     await sequelize.sync()
-    
+
     const { email, password } = await request.json()
 
     if (!email || !password) {
@@ -18,6 +18,10 @@ export async function POST(request: Request) {
     const user = await User.findOne({ where: { email } })
     if (!user) {
       return NextResponse.json({ message: "Identifiants invalides." }, { status: 401 })
+    }
+
+    if (!user.emailVerified) {
+      return NextResponse.json({ message: "Veuillez vérifier votre adresse email avant de vous connecter." }, { status: 403 })
     }
     
     const isPasswordValid = await bcrypt.compare(password, user.password);

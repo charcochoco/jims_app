@@ -76,12 +76,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
         throw new Error(data.message || (mode === "login" ? "Échec de la connexion." : "Échec de l'inscription."))
       }
 
-      login(data.user, data.token)
+      if (mode === "login") {
+        login(data.user, data.token)
+      }
 
       toast({
-        title: mode === "login" ? "Connexion réussie!" : "Inscription réussie!",
+        title: mode === "login" ? "Connexion réussie!" : "Inscription réussie",
         description:
-          mode === "login" ? "Vous êtes maintenant connecté." : "Bienvenue ! Vous pouvez maintenant vous connecter.",
+          mode === "login" ? "Vous êtes maintenant connecté." : "Veuillez vérifier votre email pour vous connecter en suivant les instructions du mail reçu.",
       })
 
       // Redirect after successful login/registration
@@ -92,7 +94,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           router.push("/account")
         }
       } else {
-        router.push("/account")
+        router.push("/login")
       }
       router.refresh() // To update navbar state
     } catch (err) {
@@ -249,12 +251,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
             {mode === "login" ? "Se connecter" : "S'inscrire"}
           </Button>
           {mode === "login" ? (
+            <>
+              <p className="text-sm text-muted-foreground text-right w-full">
+              <Link href="/forgot-password" className="text-orange-600 hover:underline">
+                Mot de passe oublié ?
+              </Link>
+            </p>
             <p className="text-sm text-muted-foreground">
               Pas encore de compte ?{" "}
               <Link href="/register" className="font-medium text-orange-600 hover:underline">
                 S&apos;inscrire
               </Link>
             </p>
+            </>
           ) : (
             <p className="text-sm text-muted-foreground">
               Déjà un compte ?{" "}
