@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
+import { X, Loader2 } from "lucide-react"
 
 export default function InstallPrompt() {
   const [showiOSBanner, setShowiOSBanner] = useState(false)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [showAndroidPrompt, setShowAndroidPrompt] = useState(false)
+  const [isInstalling, setIsInstalling] = useState(false)
 
   useEffect(() => {
     const isDismissed = localStorage.getItem("pwaPromptDismissed") === "true"
@@ -20,7 +21,7 @@ export default function InstallPrompt() {
       setShowiOSBanner(true)
     }
 
-    const isAndroid = true
+    const isAndroid = /android/.test(navigator.userAgent.toLowerCase())
     const handler = (e: any) => {
       e.preventDefault()
       setDeferredPrompt(e)
@@ -40,14 +41,18 @@ export default function InstallPrompt() {
 
   const handleInstall = async () => {
     if (deferredPrompt) {
+      setIsInstalling(true)
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
+      setIsInstalling(false)
+
       if (outcome === "accepted") {
         console.log("✅ Installation acceptée")
       } else {
         console.log("❌ Installation refusée")
         localStorage.setItem("pwaPromptDismissed", "true")
       }
+
       setDeferredPrompt(null)
       setShowAndroidPrompt(false)
     }
@@ -65,8 +70,20 @@ export default function InstallPrompt() {
         <div className="fixed bottom-4 inset-x-4 md:inset-x-auto md:right-4 bg-white border shadow-md p-4 rounded-lg z-50 flex items-center justify-between max-w-sm mx-auto">
           <p className="text-sm mr-2">📲 Installer l’application sur votre appareil pour y accéder plus rapidement</p>
           <div className="flex gap-2">
-            <Button size="sm" className="bg-orange-500 hover:bg-orange-600" onClick={handleInstall}>
-              Installer
+            <Button
+              size="sm"
+              className="bg-orange-500 hover:bg-orange-600 flex items-center justify-center"
+              onClick={handleInstall}
+              disabled={isInstalling}
+            >
+              {isInstalling ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Installation...
+                </>
+              ) : (
+                "Installer"
+              )}
             </Button>
             <Button size="icon" variant="ghost" onClick={handleDismiss}>
               <X className="w-4 h-4" />
