@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { X } from "lucide-react"
 
 export default function InstallPrompt() {
   const [showiOSBanner, setShowiOSBanner] = useState(false)
@@ -49,18 +50,39 @@ export default function InstallPrompt() {
   return (
     <>
       {showAndroidPrompt && (
-        <div className="fixed bottom-4 inset-x-4 bg-white shadow-lg border rounded-lg p-4 z-50">
-          <p className="mb-2 text-sm">💡 Installez l'application pour un accès rapide et hors-ligne !</p>
-          <Button onClick={handleInstall} className="w-full bg-orange-500 hover:bg-orange-600">
-            Installer l'application
-          </Button>
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full relative text-center">
+                <button onClick={() => setShowAndroidPrompt(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black">
+                <X className="w-5 h-5" />
+                </button>
+                <h2 className="text-lg font-bold mb-2">📲 Installer l'application</h2>
+                <p className="text-sm text-gray-700 mb-4">
+                Installez cette application sur votre appareil pour y accéder plus rapidement et hors-ligne.
+                </p>
+                <Button onClick={handleInstall} className="w-full bg-orange-500 hover:bg-orange-600">
+                Installer
+                </Button>
+            </div>
         </div>
       )}
 
       {showiOSBanner && (
-        <div className="fixed bottom-4 inset-x-4 bg-white shadow-lg border rounded-lg p-4 z-50 text-center text-sm">
-          📱 Pour installer cette app sur votre iPhone, appuyez sur le bouton <strong>Partager</strong> (en bas de l’écran),
-          puis sélectionnez <strong>“Sur l’écran d’accueil”</strong>.
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full relative text-center">
+                <button onClick={() => setShowiOSBanner(false)} className="absolute top-4 right-4 text-gray-500 hover:text-black">
+                <X className="w-5 h-5" />
+                </button>
+                <h2 className="text-lg font-bold mb-2">📱 Installer l'application</h2>
+                <p className="text-sm text-gray-700 mb-4">
+                Pour installer cette app sur votre iPhone, appuyez sur le bouton <strong>Partager</strong> (en bas de l’écran depuis Safari), puis sélectionnez <strong>“Sur l’écran d’accueil”</strong>.
+                </p>
+                <button
+                onClick={() => setShowiOSBanner(false)}
+                className="mt-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md"
+                >
+                Fermer
+                </button>
+            </div>
         </div>
       )}
     </>
