@@ -1,14 +1,12 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "../hooks/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
 import { Loader2 } from "lucide-react"
 import { useAuth } from "@/hooks/auth-context"
@@ -20,11 +18,13 @@ interface AuthFormProps {
 export default function AuthForm({ mode }: AuthFormProps) {
   const router = useRouter()
   const { toast } = useToast()
+  const { login } = useAuth()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [firstName, setFirstName] = useState("") 
-  const [lastName, setLastName] = useState("") 
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [acceptTerms, setAcceptTerms] = useState(false)
@@ -32,248 +32,205 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [acceptNotifications, setAcceptNotifications] = useState(false)
   const [confirmAge, setConfirmAge] = useState(false)
 
-  const { login } = useAuth()
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
     const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register"
-    const payload = mode === "login" ? { email, password } : { firstName, lastName, email, password, acceptNotifications }
+    const payload =
+      mode === "login"
+        ? { email, password }
+        : { firstName, lastName, email, password, acceptNotifications }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (mode === "register" && !passwordRegex.test(password)) {
-      setError("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.")
-      toast({
-        title: "Erreur",
-        description: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    if (mode === "register" && password !== confirmPassword) {
-      setError("Les mots de passes ne correspondent pas.")
-      toast({
-        title: "Erreur",
-        description: "Les mots de passes ne correspondent pas.",
-        variant: "destructive",
-      })
-      return
+    if (mode === "register") {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/
+      if (!passwordRegex.test(password)) {
+        setError("Mot de passe trop faible.")
+        toast({
+          title: "Erreur",
+          description: "Le mot de passe doit contenir au moins 8 caractères, avec majuscule, minuscule, chiffre et symbole.",
+          variant: "destructive",
+        })
+        setIsLoading(false)
+        return
+      }
+      if (password !== confirmPassword) {
+        setError("Les mots de passe ne correspondent pas.")
+        toast({
+          title: "Erreur",
+          description: "Les mots de passe ne correspondent pas.",
+          variant: "destructive",
+        })
+        setIsLoading(false)
+        return
+      }
     }
 
     try {
-      const response = await fetch(endpoint, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
 
-      const data = await response.json()
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message || "Une erreur est survenue.")
 
-      if (!response.ok) {
-        throw new Error(data.message || (mode === "login" ? "Échec de la connexion." : "Échec de l'inscription."))
-      }
-
-      if (mode === "login") {
-        login(data.user, data.token)
-      }
+      if (mode === "login") login(data.user, data.token)
 
       toast({
-        title: mode === "login" ? "Connexion réussie!" : "Inscription réussie",
+        title: mode === "login" ? "Connexion réussie" : "Inscription réussie",
         description:
-          mode === "login" ? "Vous êtes maintenant connecté." : "Veuillez vérifier votre email pour vous connecter en suivant les instructions du mail reçu.",
+          mode === "login"
+            ? "Bienvenue sur Jim's !"
+            : "Vérifie ton email pour activer ton compte.",
       })
 
-      // Redirect after successful login/registration
-      if (mode === "login") {
-        if (data.user.role === "admin") {
-          router.push("/admin/home")
-        } else {
-          router.push("/account")
-        }
-      } else {
-        router.push("/login")
-      }
-      router.refresh() // To update navbar state
+      router.push(mode === "login" ? (data.user.role === "admin" ? "/admin/home" : "/account") : "/login")
+      router.refresh()
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Une erreur inconnue est survenue."
-      setError(errorMessage)
-      toast({
-        title: "Erreur",
-        description: errorMessage,
-        variant: "destructive",
-      })
+      const message = err instanceof Error ? err.message : "Erreur inconnue."
+      setError(message)
+      toast({ title: "Erreur", description: message, variant: "destructive" })
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>{mode === "login" ? "Se connecter" : "Créer un compte"}</CardTitle>
-        <CardDescription>
-          {mode === "login"
-            ? "Accédez à votre compte Jim's."
-            : "Rejoignez Jim's pour profiter de nos offres et de notre programme de fidélité."}
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          {mode === "register" && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="first_name">Prénom</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="last_name">Nom</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-            </>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {mode === "register" && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="first_name">Prénom</Label>
             <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="first_name"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
               disabled={isLoading}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe</Label>
+          <div>
+            <Label htmlFor="last_name">Nom</Label>
             <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="last_name"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
-              minLength={mode === "register" ? 6 : undefined}
               disabled={isLoading}
             />
           </div>
-          {mode === "register" && (
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="first_name">Confirmer le mot de passe</Label>
-                <Input
-                  id="confirm_password"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="space-y-2 text-sm">
-                <div>
-                  <label className="flex items-start space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={acceptTerms}
-                      onChange={() => setAcceptTerms(!acceptTerms)}
-                      required
-                    />
-                    <span>
-                      J&apos;ai lu et j&apos;accepte les{" "}
-                      <Link href="/conditions-d-utilisation" className="text-orange-600 underline">Conditions d&apos;Utilisation</Link>,{" "}
-                      <Link href="/confidentialite" className="text-orange-600 underline">Politique de Confidentialité</Link> et{" "}
-                      <Link href="/mentions-legales" className="text-orange-600 underline">Mentions légales</Link>.
-                    </span>
-                  </label>
-                </div>
+        </div>
+      )}
 
-                <div>
-                  <label className="flex items-start space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={acceptFidelity}
-                      onChange={() => setAcceptFidelity(!acceptFidelity)}
-                      required
-                    />
-                    <span>
-                      Je souhaite adhérer au programme de fidélité Jim&apos;s. J&apos;accepte que mes données soient utilisées à cette fin.
-                    </span>
-                  </label>
-                </div>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={isLoading}
+        />
+      </div>
 
-                <div>
-                  <label className="flex items-start space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={acceptNotifications}
-                      onChange={() => setAcceptNotifications(!acceptNotifications)}
-                    />
-                    <span>
-                      J'accepte de recevoir des notifications push. Vous pouvez retirer votre consentement à tout moment.
-                    </span>
-                  </label>
-                </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Mot de passe</Label>
+        <Input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          disabled={isLoading}
+        />
+      </div>
 
-                <div>
-                  <label className="flex items-start space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={confirmAge}
-                      onChange={() => setConfirmAge(!confirmAge)}
-                      required
-                    />
-                    <span>Je confirme avoir 16 ans ou plus.</span>
-                  </label>
-                </div>
-              </div>
-            </>
-          )}
-          {error && <p className="text-sm text-red-500">{error}</p>}
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {mode === "login" ? "Se connecter" : "S'inscrire"}
-          </Button>
-          {mode === "login" ? (
-            <>
-              <p className="text-sm text-muted-foreground text-right w-full">
-              <Link href="/forgot-password" className="text-orange-600 hover:underline">
-                Mot de passe oublié ?
+      {mode === "register" && (
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword">Confirmation</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            disabled={isLoading}
+          />
+        </div>
+      )}
+
+      {mode === "register" && (
+        <div className="space-y-3 text-sm text-gray-600">
+          <label className="flex items-start gap-2">
+            <input type="checkbox" required checked={acceptTerms} onChange={() => setAcceptTerms(!acceptTerms)} />
+            <span className="font-secondary">
+              J'accepte les{" "}
+              <Link href="/terms-of-service" className="text-[#d1742c] underline font-secondary">
+                Conditions d’utilisation
               </Link>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Pas encore de compte ?{" "}
-              <Link href="/register" className="font-medium text-orange-600 hover:underline">
-                S&apos;inscrire
-              </Link>
-            </p>
-            </>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Déjà un compte ?{" "}
-              <Link href="/login" className="font-medium text-orange-600 hover:underline">
-                Se connecter
-              </Link>
-            </p>
-          )}
-        </CardFooter>
-      </form>
-    </Card>
+              ,{" "}
+              <Link href="/privacy-policy" className="text-[#d1742c] underline font-secondary">
+                Politique de confidentialité
+              </Link>{" "}
+              et{" "}
+              <Link href="/legal-information" className="text-[#d1742c] underline font-secondary">
+                Mentions légales
+              </Link>.
+            </span>
+          </label>
+
+          <label className="flex items-start gap-2">
+            <input type="checkbox" required checked={acceptFidelity} onChange={() => setAcceptFidelity(!acceptFidelity)} />
+            <span className="font-secondary">Je souhaite adhérer au programme fidélité Jim's.</span>
+          </label>
+
+          <label className="flex items-start gap-2">
+            <input type="checkbox" checked={acceptNotifications} onChange={() => setAcceptNotifications(!acceptNotifications)} />
+            <span className="font-secondary">Je souhaite recevoir des notifications push.</span>
+          </label>
+
+          <label className="flex items-start gap-2">
+            <input type="checkbox" required checked={confirmAge} onChange={() => setConfirmAge(!confirmAge)} />
+            <span className="font-secondary">Je confirme avoir 16 ans ou plus.</span>
+          </label>
+        </div>
+      )}
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
+
+      <Button type="submit" className="w-full bg-[#d1742c] hover:bg-[#b86426]" disabled={isLoading}>
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin font-secondary" />}
+        {mode === "login" ? "Se connecter" : "S'inscrire"}
+      </Button>
+
+      {mode === "login" ? (
+        <div className="text-sm text-center">
+          <p>
+            <Link href="/forgot-password" className="text-[#d1742c] underline font-secondary">
+              Mot de passe oublié ?
+            </Link>
+          </p>
+          <p className="mt-2 font-secondary">
+            Pas encore de compte ?{" "}
+            <Link href="/register" className="text-[#d1742c] underline font-secondary">
+              S’inscrire
+            </Link>
+          </p>
+        </div>
+      ) : (
+        <p className="text-sm text-center font-secondary">
+          Déjà inscrit ?{" "}
+          <Link href="/login" className="text-[#d1742c] underline font-secondary">
+            Se connecter
+          </Link>
+        </p>
+      )}
+    </form>
   )
 }

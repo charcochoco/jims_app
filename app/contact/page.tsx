@@ -40,45 +40,58 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold text-orange-600">Contactez-nous</h1>
+    <main className="bg-[#fdf9f3] py-16 px-6 md:px-12 lg:px-24 min-h-screen">
+      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-xl p-8 md:p-12">
+        <h1 className="text-4xl font-bold text-[#241f18] mb-4 text-center font-title">Contactez-nous</h1>
+        <p className="text-gray-600 text-center mb-10  font-secondary">
+          Une question, une suggestion ou juste envie de dire bonjour ? Laissez-nous un message, on vous répondra vite !
+        </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          name="name"
-          placeholder="Votre nom"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
-        <Input
-          name="email"
-          type="email"
-          placeholder="Votre email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <Input
-          name="subject"
-          placeholder="Sujet"
-          value={form.subject}
-          onChange={handleChange}
-          required
-        />
-        <Textarea
-          name="message"
-          placeholder="Votre message"
-          rows={5}
-          value={form.message}
-          onChange={handleChange}
-          required
-        />
-        <Button type="submit" disabled={loading}>
-          {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-          Envoyer
-        </Button>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            name="name"
+            placeholder="Votre nom"
+            value={form.name}
+            onChange={handleChange}
+            required
+            className="rounded-lg border-gray-300 focus:border-[#d1742c] focus:ring-[#d1742c]"
+          />
+          <Input
+            name="email"
+            type="email"
+            placeholder="Votre email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="rounded-lg border-gray-300 focus:border-[#d1742c] focus:ring-[#d1742c]"
+          />
+          <Input
+            name="subject"
+            placeholder="Sujet"
+            value={form.subject}
+            onChange={handleChange}
+            required
+            className="rounded-lg border-gray-300 focus:border-[#d1742c] focus:ring-[#d1742c]"
+          />
+          <Textarea
+            name="message"
+            placeholder="Votre message"
+            rows={5}
+            value={form.message}
+            onChange={handleChange}
+            required
+            className="rounded-lg border-gray-300 focus:border-[#d1742c] focus:ring-[#d1742c]"
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="bg-[#d1742c] text-white hover:bg-[#b86426] rounded-lg px-6 py-3 w-full text-lg font-secondary"
+          >
+            {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+            Envoyer le message
+          </Button>
+        </form>
+      </div>
+    </main>
   )
 }
