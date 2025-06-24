@@ -1,4 +1,3 @@
-// app/reset-password/reset-password-form.tsx
 "use client"
 
 import { useState } from "react"
@@ -17,7 +16,10 @@ export default function ResetPasswordForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
-    if (password !== confirm) return setError("Les mots de passe ne correspondent pas")
+    if (password !== confirm) {
+      setError("Les mots de passe ne correspondent pas")
+      return
+    }
 
     const res = await fetch("/api/auth/reset-password", {
       method: "POST",
@@ -34,35 +36,43 @@ export default function ResetPasswordForm() {
     }
   }
 
-  return (
-    <div className="max-w-md mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">Nouveau mot de passe</h1>
-      {success ? (
-        <p className="text-green-600">Mot de passe réinitialisé ! Redirection...</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="password"
-            placeholder="Nouveau mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border p-2"
-          />
-          <input
-            type="password"
-            placeholder="Confirmer"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            required
-            className="w-full border p-2"
-          />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button className="bg-orange-600 text-white p-2 rounded" type="submit">
-            Réinitialiser
-          </button>
-        </form>
-      )}
-    </div>
+  return success ? (
+    <p className="text-green-600 text-center">Mot de passe réinitialisé ! Redirection...</p>
+  ) : (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label htmlFor="password" className="block text-sm font-medium text-[#241f18] mb-1">
+          Nouveau mot de passe
+        </label>
+        <input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d1742c]"
+        />
+      </div>
+      <div>
+        <label htmlFor="confirm" className="block text-sm font-medium text-[#241f18] mb-1">
+          Confirmation
+        </label>
+        <input
+          id="confirm"
+          type="password"
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
+          required
+          className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#d1742c]"
+        />
+      </div>
+      {error && <p className="text-sm text-red-500">{error}</p>}
+      <button
+        type="submit"
+        className="w-full bg-[#d1742c] hover:bg-[#b86426] text-white font-semibold py-2 rounded-md"
+      >
+        Réinitialiser le mot de passe
+      </button>
+    </form>
   )
 }

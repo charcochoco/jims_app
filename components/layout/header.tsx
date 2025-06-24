@@ -1,86 +1,110 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { MenuIcon, UtensilsCrossed, LogOut } from "lucide-react"
+import { Menu, LogOut } from "lucide-react"
 import { useAuth } from "@/hooks/auth-context"
+import Image from "next/image"
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isLoggedIn, isAdmin, logout } = useAuth()
 
   const navLinks = [
-    { href: "/", label: "Accueil" },
-    { href: "/menu", label: "Menu" },
+    { href: "/menu", label: "La carte" },
     { href: "/apropos", label: "A propos" },
-    { href: "/contact", label: "Contact" },
-    ...(isLoggedIn ? [{ href: "/account", label: "Mon Compte" }] : [{ href: "/login", label: "Connexion" }]),
+    // { href: "/contact", label: "Contact" },
+    ...(isLoggedIn ? [{ href: "/account", label: "Mon compte" }] : []),
     ...(isLoggedIn && isAdmin ? [{ href: "/admin/home", label: "Admin" }] : []),
   ]
 
   return (
-    <header className="bg-background border-b sticky top-0 z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-orange-500">
-          <UtensilsCrossed className="h-7 w-7" />
-          Jim&apos;s
+    <header className="font-body py-4 px-6 md:px-12 lg:px-24 flex justify-between items-center sticky top-0 z-50 bg-[#f5eede]/80 backdrop-blur-sm">
+      <div className="text-2xl font-bold font-title">
+        <Link href="/">
+          <Image
+            src="/images/Logo.png"
+            alt="Bowl of noodles"
+            width={60}
+            height={135}
+            className="rounded-lg object-cover z-0"
+            style={{maxHeight: '135px', maxWidth: '60px'}}
+          />
         </Link>
+      </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-4">
-          {navLinks.map((link) => (
-            <Button key={link.href} variant="ghost" asChild>
-              <Link href={link.href}>{link.label}</Link>
-            </Button>
-          ))}
-          {isLoggedIn && (
-            <Button variant="ghost" onClick={logout}>
-              <LogOut className="mr-2 h-4 w-4" /> Déconnexion
-            </Button>
-          )}
-        </nav>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MenuIcon className="h-6 w-6" />
-                <span className="sr-only">Ouvrir le menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <nav className="flex flex-col gap-4 mt-8">
-                {navLinks.map((link) => (
-                  <Button
-                    key={link.href}
-                    variant="ghost"
-                    className="justify-start text-lg"
-                    asChild
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Link href={link.href}>{link.label}</Link>
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center space-x-6">
+        {navLinks.map((link) => (
+          <Link key={link.href} href={link.href} className="hover:text-[#d1742c] font-secondary">
+            {link.label}
+          </Link>
+        ))}
+        <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
+          <Button variant="ghost" className="text-[#d1742c] hover:text-[#b86426] flex items-center font-secondary">Commander</Button>
+        </Link>
+        {isLoggedIn ? (
+          <Button
+            onClick={logout}
+            variant="ghost"
+            className="text-[#d1742c] hover:text-[#b86426] flex items-center"
+          >
+            <LogOut className="mr-2 h-4 w-4 font-secondary" />
+            Déconnexion
+          </Button>
+        ) : (
+          <Link href="/login">
+            <Button className="bg-[#d1742c] text-white hover:bg-[#b86426] rounded-lg font-secondary">Se connecter</Button>
+          </Link>
+        )}
+      </nav>
+
+      <div className="md:hidden">
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button className="bg-[#d1742c] text-white hover:bg-[#b86426] rounded-lg">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <nav className="flex flex-col gap-4 mt-8">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button variant="ghost" className="justify-start text-lg w-full font-secondary">
+                    {link.label}
                   </Button>
-                ))}
-                {isLoggedIn && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      logout()
-                      setIsMobileMenuOpen(false)
-                    }}
-                    className="justify-start text-lg"
-                  >
-                    <LogOut className="mr-2 h-5 w-5" /> Déconnexion
+                </Link>
+              ))}
+              <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
+                <Button variant="ghost" className="text-[#d1742c] hover:text-[#b86426] flex items-center font-secondary">Commander</Button>
+              </Link>
+              {isLoggedIn ? (
+                <Button
+                  variant="ghost"
+                  className="justify-start text-lg"
+                  onClick={() => {
+                    logout()
+                    setIsMobileMenuOpen(false)
+                  }}
+                >
+                  <LogOut className="mr-2 h-5 w-5 font-secondary" />
+                  Déconnexion
+                </Button>
+              ) : (
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="font-secondary bg-[#d1742c] text-white hover:bg-[#b86426] rounded-lg w-full justify-start text-lg">
+                    Se connecter
                   </Button>
-                )}
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+                </Link>
+              )}
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   )
 }
+
