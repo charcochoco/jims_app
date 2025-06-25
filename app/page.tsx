@@ -157,7 +157,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="py-16 md:py-24 bg-[#241f18] text-white">
+      <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#241f18] text-white">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
           <div className="flex items-start space-x-6">
             {/* <Avatar className="w-20 h-20 border-2 border-gray-700 flex-shrink-0">
