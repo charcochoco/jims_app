@@ -30,7 +30,7 @@ export default function Header() {
             width={60}
             height={135}
             className="rounded-lg object-cover z-0"
-            style={{maxHeight: '135px', maxWidth: '60px'}}
+            style={{ maxHeight: '135px', maxWidth: '60px' }}
           />
         </Link>
       </div>
@@ -76,8 +76,10 @@ export default function Header() {
                   </Button>
                 </Link>
               ))}
-              <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg" className="text-[#d1742c] hover:text-[#b86426] font-secondary">
-                Commander
+              <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
+                <Button variant="ghost" className="justify-start text-lg w-full font-secondary text-[#d1742c] hover:text-[#b86426]">
+                  Commander
+                </Button>
               </Link>
               {isLoggedIn ? (
                 <Button
