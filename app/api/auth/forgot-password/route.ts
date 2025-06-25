@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { User } from "@/lib/models/User"
 import { Resend } from "resend"
-import { signToken } from "@/lib/auth"
+import { signToken } from "@/lib/jwt"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 

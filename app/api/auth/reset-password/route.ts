@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { verifyToken } from "@/lib/auth"
+import { verifyToken } from "@/lib/jwt"
 import { User } from "@/lib/models/User"
 import bcrypt from "bcryptjs"
 

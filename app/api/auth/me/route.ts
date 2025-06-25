@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { verifyToken } from '@/lib/auth'
+import { verifyToken } from '@/lib/jwt'
 import { User } from "@/lib/models/User"
 import { sequelize } from "@/lib/db"
+import { getUserFromToken } from "@/lib/auth" 
 
 export async function GET() {
   try {
     await sequelize.sync()
-    
+
     const cookieStore = await cookies()
     const token = cookieStore.get("token")?.value
 
@@ -15,15 +16,7 @@ export async function GET() {
       return NextResponse.json({ message: "Non authentifié." }, { status: 401 })
     }
 
-    const payload = token && await verifyToken(token)
-
-    if (!payload) {
-      return NextResponse.json({ user: null }, { status: 401 })
-    } 
-  
-    const userId = payload.sub
-
-    const user = await User.findByPk(userId)
+    const user = await getUserFromToken(token)
 
     if (!user) {
       return NextResponse.json({ message: "Utilisateur non trouvé." }, { status: 404 })

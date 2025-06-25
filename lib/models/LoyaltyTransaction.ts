@@ -6,7 +6,6 @@ export class LoyaltyTransaction extends Model {
   userId!: string
   type!: string
   points!: number
-  orderId!: string
 }
 
 LoyaltyTransaction.init(
@@ -28,10 +27,6 @@ LoyaltyTransaction.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    orderId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    }
   },
   {
     sequelize,

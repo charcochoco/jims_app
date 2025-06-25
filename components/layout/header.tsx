@@ -35,8 +35,6 @@ export default function Header() {
         </Link>
       </div>
 
-
-      {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center space-x-6">
         {navLinks.map((link) => (
           <Link key={link.href} href={link.href} className="hover:text-[#d1742c] font-secondary">

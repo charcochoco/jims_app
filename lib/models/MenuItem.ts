@@ -5,7 +5,6 @@ export class MenuItem extends Model {
   id!: string
   name!: string
   description!: string
-  imageUrl!: string
   price!: number
   category!: string
   available!: boolean
@@ -25,10 +24,6 @@ MenuItem.init(
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     price: {
       type: DataTypes.DECIMAL,
