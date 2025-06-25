@@ -109,7 +109,7 @@ export default function Menu() {
                                 isBold
                             />
                         </div>
-
+                        <hr className="block md:hidden border-t-2 border-brand-accent" style={{ borderColor: '#d1742c' }} />
                         <div>
                             <MenuSectionTitle title="Menu burger" />
                             <MenuItem
@@ -186,7 +186,7 @@ export default function Menu() {
                     </div>
 
                     <hr className="border-t-2 border-brand-accent pb-6" style={{ borderColor: '#d1742c' }} />
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
                         <div>
                             <MenuSectionTitle title="Salade" />
@@ -204,7 +204,7 @@ export default function Menu() {
                             />
                             <p className="text-xs text-right text-brand-text-secondary font-sans mt-2">*Selon disponibilité</p>
                         </div>
-                   
+                        <hr className="block md:hidden border-t-2 border-brand-accent my-6" style={{ borderColor: '#d1742c' }} />
                         <div>
                             <MenuSectionTitle title="Dessert" />
                             <MenuItem name="Fondant chocolat" priceMenu="5,50€" isBold />
@@ -224,7 +224,7 @@ export default function Menu() {
                                 <MenuItem name="Bowl" priceMenu="9,95" description="Viande au choiw, Fromagère maison, Frite, Sauce au choix" isBold />
                             </div>
                         </div>
-
+                        <hr className="block md:hidden border-t-2 border-brand-accent my-6" style={{ borderColor: '#d1742c' }} />
                         <div>
                             <MenuSectionTitle title="Snack" />
                             <MenuItem name="Tenders x4" priceMenu="5,90€" isBold />
@@ -237,7 +237,7 @@ export default function Menu() {
                             <p className="font-secondary text-brand-text ml-1">Oignon frit 1,20</p>
                             <p className="font-secondary text-brand-text ml-1">Bacon 2</p>
                         </div>
-                      
+                        <hr className="block md:hidden border-t-2 border-brand-accent my-6" style={{ borderColor: '#d1742c' }} />
                         <div className="flex flex-col justify-between">
                             <div>
                                 <MenuSectionTitle title="Softs" />

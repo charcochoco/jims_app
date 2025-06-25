@@ -41,16 +41,16 @@ export default function Header() {
             {link.label}
           </Link>
         ))}
-        <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
-          <Button variant="ghost" className="text-[#d1742c] hover:text-[#b86426] flex items-center font-secondary">Commander</Button>
+        <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg" className="text-[#d1742c] hover:text-[#b86426] font-secondary">
+          Commander
         </Link>
         {isLoggedIn ? (
           <Button
             onClick={logout}
             variant="ghost"
-            className="text-[#d1742c] hover:text-[#b86426] flex items-center"
+            className="text-[#d1742c] hover:text-[#b86426] flex items-center font-secondary"
           >
-            <LogOut className="mr-2 h-4 w-4 font-secondary" />
+            <LogOut className="mr-2 h-4 w-4" />
             Déconnexion
           </Button>
         ) : (
@@ -67,7 +67,7 @@ export default function Header() {
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent className="bg-white text-[#241f18]" side="right">
             <nav className="flex flex-col gap-4 mt-8">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)}>
@@ -76,19 +76,19 @@ export default function Header() {
                   </Button>
                 </Link>
               ))}
-              <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
-                <Button variant="ghost" className="text-[#d1742c] hover:text-[#b86426] flex items-center font-secondary">Commander</Button>
+              <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg" className="text-[#d1742c] hover:text-[#b86426] font-secondary">
+                Commander
               </Link>
               {isLoggedIn ? (
                 <Button
+                  className="justify-start text-lg font-secondary"
                   variant="ghost"
-                  className="justify-start text-lg"
                   onClick={() => {
                     logout()
                     setIsMobileMenuOpen(false)
                   }}
                 >
-                  <LogOut className="mr-2 h-5 w-5 font-secondary" />
+                  <LogOut className="mr-2 h-5 w-5" />
                   Déconnexion
                 </Button>
               ) : (

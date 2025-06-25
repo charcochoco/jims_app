@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import CtaOrder from "@/components/CtaOrder"
 import type React from "react"
@@ -20,36 +22,34 @@ const InfoSection: React.FC<InfoSectionProps> = ({
   imagePosition = "right",
 }) => {
   const titleParts = title.split(highlightedWord)
-  const imageEl = (
-    <div className="w-full md:w-5/12">
-      <Image
-        src={imageUrl || "/placeholder.svg"}
-        alt={imageAlt}
-        width={500}
-        height={350}
-        className="rounded-lg shadow-lg object-cover w-full"
-      />
-    </div>
-  )
-  const textEl = (
-    <div className="w-full md:w-6/12">
-      <h2 className="text-4xl md:text-5xl font-title font-bold text-brand-text mb-4">
-        {titleParts[0]}
-        <span className="text-[#d1742c]">{highlightedWord}</span>
-        {titleParts[1]}
-      </h2>
-      <div className="space-y-4 text-brand-text-secondary font-body text-base md:text-lg">{children}</div>
-    </div>
-  )
 
   return (
-    <section className="container mx-auto py-12 md:py-16">
+    <section className="w-full px-4 sm:px-6 md:px-12 lg:px-24 py-12 md:py-16 max-w-7xl mx-auto">
       <div
-        className={`flex flex-col h-64 md:h-96 md:flex-row justify-between items-center gap-12 ${imagePosition === "left" ? "md:flex-row-reverse" : ""
-          }`}
+        className={`flex flex-col md:flex-row justify-between items-center gap-12 ${
+          imagePosition === "left" ? "md:flex-row-reverse" : ""
+        }`}
       >
-        {textEl}
-        {imageEl}
+        <div className="w-full md:w-6/12 flex-1">
+          <h2 className="text-3xl md:text-5xl font-title font-bold text-brand-text mb-4">
+            {titleParts[0]}
+            <span className="text-[#d1742c]">{highlightedWord}</span>
+            {titleParts[1]}
+          </h2>
+          <div className="space-y-4 text-brand-text-secondary font-body text-base md:text-lg">
+            {children}
+          </div>
+        </div>
+
+        <div className="w-full md:w-5/12 flex-1">
+          <Image
+            src={imageUrl || "/placeholder.svg"}
+            alt={imageAlt}
+            width={500}
+            height={350}
+            className="rounded-lg shadow-lg object-cover w-full h-auto"
+          />
+        </div>
       </div>
     </section>
   )
@@ -58,7 +58,7 @@ const InfoSection: React.FC<InfoSectionProps> = ({
 export default function NotreConceptPage() {
   return (
     <>
-      <main className="px-6 md:px-12 lg:px-24">
+      <main className="px-4 sm:px-6 md:px-12 lg:px-24">
         <InfoSection
           title="Notre histoire"
           highlightedWord="histoire"
@@ -79,7 +79,7 @@ export default function NotreConceptPage() {
           title="Ce que nous servons"
           highlightedWord="servons"
           imageUrl="/images/classique.jpg"
-          imageAlt="Another view of a burger and fries"
+          imageAlt="Burger and fries view"
           imagePosition="left"
         >
           <p>
