@@ -3,7 +3,7 @@ import { sequelize } from "@/lib/db"
 import { User } from "@/lib/models/User"
 import bcrypt from "bcryptjs"
 import { cookies } from "next/headers"
-import { signToken } from '@/lib/auth'
+import { signToken } from '@/lib/jwt'
 
 export async function POST(request: Request) {
   try {

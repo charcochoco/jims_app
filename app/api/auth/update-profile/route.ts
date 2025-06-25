@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { verifyToken } from "@/lib/auth"
+import { verifyToken } from "@/lib/jwt"
 import { User } from "@/lib/models/User"
 import bcrypt from "bcryptjs"
+import { getUserFromToken } from "@/lib/auth" 
 
 export async function PUT(req: NextRequest) {
   try {
@@ -13,12 +14,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ message: "Non authentifié." }, { status: 401 })
     }
 
-    const payload = await verifyToken(token)
-    if (!payload) {
-      return NextResponse.json({ message: "Token invalide." }, { status: 401 })
-    }
-
-    const user = await User.findByPk(payload.sub)
+    const user = await getUserFromToken(token)
     if (!user) {
       return NextResponse.json({ message: "Utilisateur non trouvé." }, { status: 404 })
     }

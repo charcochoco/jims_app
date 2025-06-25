@@ -1,6 +1,6 @@
 // app/api/verify-email/route.ts
 import { NextRequest, NextResponse } from "next/server"
-import { verifyToken, signToken } from "@/lib/auth"
+import { verifyToken, signToken } from "@/lib/jwt"
 import { User } from "@/lib/models/User"
 import { cookies } from "next/headers"
 

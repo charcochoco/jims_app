@@ -3,7 +3,7 @@ import { sequelize } from "@/lib/db"
 import { User } from "@/lib/models/User"
 import bcrypt from "bcryptjs"
 import { cookies } from "next/headers"
-import { signToken } from '@/lib/auth'
+import { signToken } from '@/lib/jwt'
 import { Resend } from "resend"
 
 const resend = new Resend(process.env.RESEND_API_KEY)

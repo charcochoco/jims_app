@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import StyledQRCode from "@/components/ui/QRcode"
+import StyledQRCode from "@/components/qrCode"
 import RegisterPush from "@/components/register-push"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,7 +27,7 @@ export default function AccountPage() {
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<any>(null)
   const [showQrModal, setShowQrModal] = useState(false)
-
+  const [userTransactions, setUserTransactions] = useState<any[]>([])
   const { logout } = useAuth()
 
   const [editMode, setEditMode] = useState(false)
@@ -57,6 +57,16 @@ export default function AccountPage() {
     }
     loadUser()
   }, [])
+
+  useEffect(() => {
+    if (!user) return
+    const loadTransactions = async () => {
+      const res = await fetch("/api/users/loyalty/transactions", { credentials: "include" })
+      const data = await res.json()
+      setUserTransactions(data.transactions || [])
+    }
+    loadTransactions()
+  }, [user])
 
   const handleSave = async () => {
     try {
@@ -124,8 +134,19 @@ export default function AccountPage() {
           <div className="flex items-center text-[#d1742c] font-semibold text-lg font-title">
             <Award className="mr-2" /> Programme de fidélité
           </div>
+
           <p className="text-2xl font-semibold text-[#241f18] font-secondary">
             Vous avez <span className="text-[#d1742c]">{user.loyaltyPoints || 0}</span> points !
+          </p>
+
+          <p className="text-sm text-[#241f18] font-secondary">
+            🎁 Lorsque vous atteignez <strong>100 points</strong>, vous gagnez un <strong>menu gratuit</strong> !
+          </p>
+          <p className="text-sm text-[#241f18] font-secondary">
+            💶 Chaque <strong>1€ dépensé</strong> vous rapporte <strong>1 point de fidélité</strong>.
+          </p>
+          <p className="text-sm text-[#241f18] font-secondary">
+            📲 Présentez votre <strong>QR code</strong> au vendeur lors du paiement pour cumuler vos points.
           </p>
 
           <div className="space-y-2">
@@ -137,7 +158,7 @@ export default function AccountPage() {
               onClick={() => setShowQrModal(true)}
             >
               {user.qrCodeValue ? (
-                <StyledQRCode value={user.qrCodeValue} size={64} />
+                <StyledQRCode value={user.qrCodeValue} size={200} />
               ) : (
                 <p className="text-sm text-gray-400 font-secondary">Aucun QR code disponible.</p>
               )}
@@ -154,15 +175,44 @@ export default function AccountPage() {
                   <X className="w-5 h-5" />
                 </button>
                 <StyledQRCode value={user.qrCodeValue} size={256} withDownload />
-                <p className="mt-4 text-sm text-gray-600 font-secondary">Cliquez sur \"Télécharger\" pour enregistrer le QR code.</p>
+                <p className="mt-4 text-sm text-gray-600 font-secondary">Cliquez sur "Télécharger" pour enregistrer le QR code.</p>
               </div>
             </div>
           )}
-
-          <Button variant="link" className="text-[#d1742c] px-0" asChild>
-            <Link href="/loyalty-rewards font-secondary">Voir les récompenses disponibles (bientôt)</Link>
-          </Button>
         </div>
+
+        {/* Section historique des transactions */}
+        <div className="bg-white rounded-xl shadow-lg p-6 space-y-4">
+          <div className="flex items-center text-[#d1742c] font-semibold text-lg font-title">
+            <Award className="mr-2" /> Historique des transactions
+          </div>
+
+          {!userTransactions.length ? (
+            <p className="text-sm text-gray-500 font-secondary">Aucune transaction de fidélité enregistrée.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm text-left font-secondary">
+                <thead>
+                  <tr className="border-b border-gray-200 text-[#241f18] font-semibold">
+                    <th className="px-4 py-2">Date</th>
+                    <th className="px-4 py-2">Type</th>
+                    <th className="px-4 py-2">Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {userTransactions.map((tx: any) => (
+                    <tr key={tx.id} className="border-b border-gray-100">
+                      <td className="px-4 py-2">{new Date(tx.createdAt).toLocaleDateString()}</td>
+                      <td className="px-4 py-2 capitalize">{tx.type}</td>
+                      <td className="px-4 py-2">{tx.points > 0 ? `+${tx.points}` : tx.points}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
 
         {/* Section modification compte */}
         <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">

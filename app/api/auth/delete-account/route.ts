@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
-import { verifyToken } from "@/lib/auth"
+import { verifyToken } from "@/lib/jwt"
 import { User } from "@/lib/models/User"
 
 export async function DELETE(req: NextRequest) {
