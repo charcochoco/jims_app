@@ -14,16 +14,6 @@ export default function StyledQRCode({ value, size = 128, withDownload = false }
   const qrCodeRef = useRef<QRCodeStyling | null>(null)
 
   useEffect(() => {
-    // const qrCode = new QRCodeStyling({
-    //   width: size,
-    //   height: size,
-    //   type: "svg",
-    //   data: value,
-    //   dotsOptions: { color: "#000000", type: "square" },
-    //   backgroundOptions: { color: "#ffffff" },
-    //   imageOptions: { margin: 0 },
-    // })
-
     const qrCode = new QRCodeStyling({
       width: size,
       height: size,
@@ -31,7 +21,7 @@ export default function StyledQRCode({ value, size = 128, withDownload = false }
       data: value,
       dotsOptions: { color: "#000000", type: "square" }, // tu peux tester "rounded" après
       backgroundOptions: { color: "#ffffff" },
-      image: "/icons/icon-192x192.png",
+      image: "/icons/logo-192x192.png",
       imageOptions: {
         crossOrigin: "anonymous",
         margin: 5, // augmente si besoin
