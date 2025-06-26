@@ -66,7 +66,7 @@ export default function QRScanner() {
         📷 Scanner un QR code client
       </div>
 
-      <div className="rounded-md overflow-hidden border border-gray-200 w-full aspect-video">
+      <div className="rounded-md overflow-hidden border border-gray-200 w-full h-[300px] sm:h-[400px]">
         <QRBarcodeScanner
           width="100%"
           height="100%"

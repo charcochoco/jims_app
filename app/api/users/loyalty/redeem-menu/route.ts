@@ -43,19 +43,19 @@ export async function POST(req: NextRequest) {
         orderId: null,
     })
 
-    const record = await PushSubscription.findOne({ where: { userId } })
+    // const record = await PushSubscription.findOne({ where: { userId } })
 
-    if (record) {
-        const pushSub = record.get("subscription")
-        if (pushSub?.endpoint) {
-            await sendPushNotification(pushSub, {
-                title: "🎁 Menu offert !",
-                body: "Vous avez utilisé 100 points pour un menu gratuit. Bon appétit 🍽️",
-                icon: "/icon-192.png",
-                url: "/account",
-            })
-        }
-    }
+    // if (record) {
+    //     const pushSub = record.get("subscription")
+    //     if (pushSub?.endpoint) {
+    //         await sendPushNotification(pushSub, {
+    //             title: "🎁 Menu offert !",
+    //             body: "Vous avez utilisé 100 points pour un menu gratuit. Bon appétit 🍽️",
+    //             icon: "/icon-192.png",
+    //             url: "/account",
+    //         })
+    //     }
+    // }
 
 
     return NextResponse.json({

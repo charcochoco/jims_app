@@ -7,7 +7,7 @@ export default function RegisterPush({ userId }: { userId: string }) {
       if ('serviceWorker' in navigator && 'PushManager' in window) {
         const registration = await navigator.serviceWorker.register('/sw.js')
 
-          const existingSub = await registration.pushManager.getSubscription()
+        const existingSub = await registration.pushManager.getSubscription()
 
         const newSub = await registration.pushManager.subscribe({
           userVisibleOnly: true,

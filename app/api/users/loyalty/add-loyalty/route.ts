@@ -43,19 +43,19 @@ export async function POST(req: Request) {
     points: pointsEarned,
   })
 
-  const record = await PushSubscription.findOne({ where: { userId } })
+  // const record = await PushSubscription.findOne({ where: { userId } })
 
-  if (record) {
-    const pushSub = record.get("subscription")
-    if (pushSub?.endpoint) {
-      await sendPushNotification(pushSub, {
-        title: "🎉 Points de fidélité gagnés !",
-        body: `+${pointsEarned} points ajoutés à votre compte.`,
-        icon: "/icon-192.png",
-        url: "/account",
-      })
-    }
-  }
+  // if (record) {
+  //   const pushSub = record.get("subscription")
+  //   if (pushSub?.endpoint) {
+  //     await sendPushNotification(pushSub, {
+  //       title: "🎉 Points de fidélité gagnés !",
+  //       body: `+${pointsEarned} points ajoutés à votre compte.`,
+  //       icon: "/icon-192.png",
+  //       url: "/account",
+  //     })
+  //   }
+  // }
 
   return NextResponse.json({
     message: `+${pointsEarned} points ajoutés`,

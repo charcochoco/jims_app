@@ -53,7 +53,7 @@ export default function Home() {
       <section className="bg-[#d1742c] text-white pt-10 pb-10 md:pb-20 px-6 md:px-12 lg:px-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
           <div className="md:w-2/3 z-10">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight font-title">Bienvenue chez Jim's Burger</h1>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight font-title text-[#F5EEDE]">Bienvenue chez Jim's Burger</h1>
             <div className="bg-white p-6 rounded-xl shadow-lg text-[#241f18]">
               <div className="flex mb-4">
                 <Button
