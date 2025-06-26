@@ -277,7 +277,7 @@ export default function AccountPage() {
         </div>
 
         {/* Notifications push */}
-        {user.notifications && <RegisterPush userId={user.id} />}
+        {/* {user.notifications && <RegisterPush userId={user.id} />} */}
       </div>
     </main>
   )
