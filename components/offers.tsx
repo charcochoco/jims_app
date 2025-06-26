@@ -26,7 +26,7 @@ export default function Offers() {
   }, [])
 
   return (
-    <section className="py-16 px-6 md:px-12 lg:px-24">
+    <section className="py-16 px-6 md:px-12 lg:px-24" style={{backgroundColor: 'black'}}>
       <div className="max-w-7xl mx-auto space-y-12">
         {formulas.map((f, i) => (
           <div
