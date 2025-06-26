@@ -22,7 +22,12 @@ export default function Home() {
   }, [])
 
   const handleCommander = () => {
-    if (!adresse.trim()) return
+    if (!adresse.trim()) {
+      const url = `https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg`
+
+      window.open(url, "_blank")
+      return
+    }
 
     const plObject = {
       address: adresse,
