@@ -1,18 +1,25 @@
 "use client"
 
 import PostInsta from "../components/postInsta"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { BikeIcon as Motorcycle, ShoppingBag, MapPin, Search, ChevronRight } from "lucide-react"
+import { BikeIcon as Motorcycle, ShoppingBag, MapPin, Search, ChevronRight, Instagram } from "lucide-react"
 import Offers from "@/components/offers"
-import CtaOrder from "@/components/CtaOrder"
+import CtaOrder from "@/components/ctaOrder"
 // import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 export default function Home() {
   const [adresse, setAdresse] = useState("")
+  const [posts, setPosts] = useState<string[]>([])
+
+  useEffect(() => {
+    fetch("/api/insta-posts")
+      .then(res => res.json())
+      .then(data => setPosts(data.map((p: any) => p.url)))
+  }, [])
 
   const handleCommander = () => {
     if (!adresse.trim()) return
@@ -28,12 +35,6 @@ export default function Home() {
 
     window.open(url, "_blank")
   }
-
-  const posts = [
-    "https://www.instagram.com/p/DLFX9UaIE8k/?img_index=1",
-    "https://www.instagram.com/p/DLA8axNIbwa/",
-    "https://www.instagram.com/p/DKJ35ASoid_/"
-  ]
 
   const smallImages = [
     { src: "/images/burrata.jpg", alt: "Salade burrata" },
@@ -86,12 +87,31 @@ export default function Home() {
           </div>
           <div className="md:w-1/3 mt-8 md:mt-0 ps-8 flex justify-center md:justify-end">
             <Image
-              src="/images/mascotte.png"
+              src="/images/mascotte.svg"
               alt="Mascotte Jim's burger"
               width={250}
               height={250}
               className="rounded-lg object-cover z-0"
             />
+            {/* <img
+              src="/gifs/masscote.gif"
+              alt="Mascotte Jim's burger animée"
+              width={250}
+              height={250}
+              className="rounded-lg object-cover z-0"
+            /> */}
+            {/* <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              width={250}
+              height={250}
+              className="rounded-lg object-cover z-0"
+            >
+              <source src="/videos/mascotte.mp4" type="video/mp4" />
+              Votre navigateur ne prend pas en charge les vidéos HTML5.
+            </video> */}
           </div>
         </div>
       </section>
@@ -132,11 +152,9 @@ export default function Home() {
         </div>
       </section>
 
-
-
       <Offers />
 
-      <section className="py-16 px-6 md:px-12 lg:px-24 text-center bg-[#fdf9f3]">
+      <section className="py-16 px-6 md:px-12 lg:px-24 text-center">
         <h2 className="text-4xl font-bold mb-10 text-[#241f18] font-title">Rejoins-nous sur Insta</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-10">
@@ -152,37 +170,28 @@ export default function Home() {
 
         <Link href="https://www.instagram.com/jims.fr/" target="_blank">
           <Button className="bg-[#d1742c] text-white hover:bg-[#b86426] rounded-lg px-8 py-3 text-lg font-secondary">
-            Suis-nous sur Insta
+            <Instagram /> Suis-nous sur Insta !
           </Button>
         </Link>
       </section>
 
-      <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#241f18] text-white">
+      <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-[#241f18] text-[#F5EEDE] text-center">
+        <h2 className="text-4xl font-bold mb-10 text-[#F5EEDE] font-title">Avis via Google Maps</h2>
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
           <div className="flex items-start space-x-6">
-            {/* <Avatar className="w-20 h-20 border-2 border-gray-700 flex-shrink-0">
-                <AvatarImage src="/thoughtful-man-portrait.png" alt="Timothy Nathan" />
-                <AvatarFallback>TN</AvatarFallback>
-              </Avatar> */}
-            <div>
-              <blockquote className="text-lg text-gray-300 font-body">
-                "Extremely easy to use, helped us develop our Vote for George Washington micro-site extre- mely
-                quickly! We will definitely use it again for other projects"
+            <div className="text-start">
+              <blockquote className="text-lg text-[#F5EEDE] text-gray-300 font-body">
+                "Super snack ! Les produits sont vraiment frais, les portions généreuses et tout est préparé avec soin. On sent la qualité dans chaque bouchée. Le goût est au rendez-vous, et le service est agréable en plus. Franchement, une très bonne adresse que je recommande les yeux fermés."
               </blockquote>
-              <p className="mt-4 font-semibold tracking-wider uppercase text-sm text-gray-500 font-secondary">Timothy Nathan</p>
+              <p className="mt-4 font-semibold tracking-wider uppercase text-sm text-gray-500 font-secondary">Sofia Touati - Avis via Google Maps</p>
             </div>
           </div>
           <div className="flex items-start space-x-6">
-            {/* <Avatar className="w-20 h-20 border-2 border-gray-700 flex-shrink-0">
-                <AvatarImage src="/placeholder-yixjb.png" alt="Austin Campbell" />
-                <AvatarFallback>AC</AvatarFallback>
-              </Avatar> */}
-            <div>
-              <blockquote className="text-lg text-gray-300 font-body">
-                "As a business targeting high net worth individuals, we were looking for a slick, cool and
-                mini-malistic design for our website"
+            <div className="text-start">
+              <blockquote className="text-lg text-[#F5EEDE] text-gray-300 font-body">
+                "vraiment super bon, on y est aller ce soir, les saveurs sont super bien dosé, il propose de très bonne composition !! je recommande"
               </blockquote>
-              <p className="mt-4 font-semibold tracking-wider uppercase text-sm text-gray-500 font-secondary">Austin Campbell</p>
+              <p className="mt-4 font-semibold tracking-wider uppercase text-sm text-gray-500 font-secondary">Prune Lecoin - Avis via Google Maps</p>
             </div>
           </div>
         </div>
@@ -190,53 +199,32 @@ export default function Home() {
 
       <section className="py-16 md:py-24 bg-[#f5eede] text-[#241f18]">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-12 text-center font-body">On nous le demande souvent</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center font-title">On nous le demande souvent</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             <div>
-              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">How Startup Framework works?</h3>
+              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">Où se trouve le restaurant Jim’s à Annecy ?</h3>
               <p className="text-gray-500 font-body">
-                The Generator App is an online tool that helps you to export ready-made templates ready to work as
-                your future website. It helps you to combine slides, panels and other components and export it as a
-                set of static files: HTML/CSS/JS.
+                Le restaurant Jim’s est situé en plein cœur d’Annecy, à deux pas des rues animées et des principaux lieux de vie de la ville. Facile d’accès à pied ou en transport, il est idéal pour une pause déjeuner rapide ou un repas du soir entre amis. Que vous soyez étudiant, actif du quartier ou simplement de passage, Jim’s vous accueille dans une ambiance décontractée avec des produits frais et une équipe aux petits soins.
               </p>
             </div>
             <div>
               <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">
-                Do you provide hosting with Startup Framework?
+                Est-ce que Jim’s propose la livraison de burgers à Annecy ?
               </h3>
               <p className="text-gray-500 font-body">
-                No, hosting is on you. You upload the result on your hosting via FTP or using other tools you like.
-                You can use any server, just make sure it have a PHP installed in case if you need a contact form.
+                Oui, Jim’s propose la livraison de burgers à Annecy via les principales plateformes comme Uber Eats et Deliveroo. Que vous soyez chez vous, au bureau ou entre amis au bord du lac, vos burgers préférés sont livrés rapidement, encore chauds et bien garnis. Notre service de livraison est disponible midi et soir, selon les horaires d’ouverture. Pour ceux qui préfèrent passer en coup de vent, la commande en ligne avec click & collect est aussi disponible. Commandez en quelques clics et récupérez votre repas sans attendre.
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">What exactly am I buying?</h3>
+              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">Qu’est-ce qui rend les burgers de Jim’s différents des autres ?</h3>
               <p className="text-gray-500 font-body">
-                You're buying an access to the Startup Generator app to export ready-made templates with the rest
-                source files included. It's an online tool, not a software. For more details about generator's
-                workflow watch this tutorial.
+                Chez Jim’s, chaque burger est préparé à la commande avec des produits frais, sans compromis. Le pain est moelleux, la viande est sélectionnée avec soin et les recettes sont pensées pour allier goût et générosité. Contrairement à d’autres enseignes, nous privilégions la simplicité et la qualité : pas de surgelé, pas de blabla. Jim’s, c’est un vrai bon burger servi dans une ambiance sincère. Nos formules sont adaptées aux étudiants comme aux gros mangeurs, et notre carte évolue au fil des saisons.
               </p>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">Are you planning to update Startup Framework?</h3>
+              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">Quels sont les horaires de Jim’s et y a-t-il des offres spéciales ?</h3>
               <p className="text-gray-500 font-body">
-                We are! Here is the changelog of changes we've made after the release. Thanks our clients who helped
-                us to improve our product.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">How Startup Framework works?</h3>
-              <p className="text-gray-500 font-body">
-                The Generator App is an online tool that helps you to export ready-made templates ready to work as
-                your future website. It helps you to combine slides, panels and other components and export it as a
-                set of static files: HTML/CSS/JS.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-2 text-[#241f18] font-body">Do you provide support for customers?</h3>
-              <p className="text-gray-500 font-body">
-                Yes, we are. Please use our contact us form to chat with us. We DO NOT provide product support via
-                Facebook, Twitter or others sources.
+                Jim’s est ouvert tous les jours sauf exceptions, avec un service continu le midi et une ouverture en soirée, notamment pour satisfaire les petites faims tardives. La formule étudiante est disponible en semaine de 11h à 13h (hors vacances, week-ends et jours fériés) à un tarif avantageux. Suivez-nous sur les réseaux sociaux pour connaître les nouveautés, les recettes en édition limitée et les offres spéciales du moment. Que ce soit pour un déjeuner rapide ou un burger de fin de soirée, Jim’s a toujours une bonne raison de vous accueillir.
               </p>
             </div>
           </div>

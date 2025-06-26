@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { BikeIcon as ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
 export default function CtaOrder() {
   return (
@@ -11,7 +11,7 @@ export default function CtaOrder() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
           <div className="md:w-2/5 lg:w-1/3 relative h-64 md:h-auto self-stretch">
             <Image
-              src="/images/ctaImage.jpg"
+              src="/images/footer.png"
               alt="Salad bowl"
               layout="fill"
               objectFit="cover"
@@ -27,7 +27,7 @@ export default function CtaOrder() {
                 size="lg"
                 className="font-secondary bg-[#d1742c] text-white hover:bg-[#b86426] font-bold text-lg px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
-                Commander <ChevronRight className="w-5 h-5 ml-2" />
+                Je commande <ChevronRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
           </div>

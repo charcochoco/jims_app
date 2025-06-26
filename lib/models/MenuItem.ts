@@ -1,43 +1,32 @@
+// lib/models/MenuItem.ts
 import { DataTypes, Model } from "sequelize"
 import { sequelize } from "../db"
 
 export class MenuItem extends Model {
-  id!: string
+  id!: number
   name!: string
-  description!: string
-  price!: number
+  description?: string
+  priceMenu?: string
   category!: string
-  available!: boolean
 }
 
 MenuItem.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    price: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
+    description: DataTypes.TEXT,
+    priceMenu: DataTypes.STRING,
     category: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    available: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false,
-    }
   },
   {
     sequelize,
