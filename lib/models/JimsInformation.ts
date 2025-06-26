@@ -9,9 +9,6 @@ export class JimsInformation extends Model {
   phone!: string
   address!: string
   schedules!: string
-  history!: string
-  values!: string
-  team!: string
 }
 
 JimsInformation.init(
@@ -44,18 +41,6 @@ JimsInformation.init(
     schedules: {
       type: DataTypes.TEXT,
       allowNull: false,
-    },
-    history: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    values: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    team: {
-      type: DataTypes.TEXT,
-      allowNull: true,
     }
   },
   {

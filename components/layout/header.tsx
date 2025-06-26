@@ -14,7 +14,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/menu", label: "La carte" },
-    { href: "/apropos", label: "A propos" },
+    { href: "/apropos", label: "Notre concept" },
     // { href: "/contact", label: "Contact" },
     ...(isLoggedIn ? [{ href: "/account", label: "Mon compte" }] : []),
     ...(isLoggedIn && isAdmin ? [{ href: "/admin/home", label: "Admin" }] : []),
@@ -42,7 +42,7 @@ export default function Header() {
           </Link>
         ))}
         <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg" className="text-[#d1742c] hover:text-[#b86426] font-secondary">
-          Commander
+          Je commande
         </Link>
         {isLoggedIn ? (
           <Button
@@ -78,7 +78,7 @@ export default function Header() {
               ))}
               <Link href="https://www.ubereats.com/fr/store/jims-annecy/NOyCup-kXk2BYH-I99MPHg">
                 <Button variant="ghost" className="justify-start text-lg w-full font-secondary text-[#d1742c] hover:text-[#b86426]">
-                  Commander
+                  Je commande
                 </Button>
               </Link>
               {isLoggedIn ? (

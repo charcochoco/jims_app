@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Facebook, Instagram } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 type JimsInformationType = {
@@ -34,7 +35,7 @@ export default function Footer() {
     <footer className="bg-[#241f18] text-gray-400">
       <div className="max-w-7xl mx-auto py-12 px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
         <div>
-          <h3 className="font-bold text-white mb-4 text-sm font-title">Jim's</h3>
+          <h3 className="font-bold text-white mb-4 text-sm font-title">Jim's Burger</h3>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href="/menu" className="hover:text-white font-secondary">
@@ -94,13 +95,25 @@ export default function Footer() {
 
         <div>
           <h3 className="font-bold text-white mb-4 text-sm font-title">Suis-nous</h3>
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 mb-4">
             <a href="https://www.instagram.com/jims.fr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-white">
               <Instagram size={20} />
             </a>
             <a href="https://www.facebook.com/jims.annecy" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-white">
               <Facebook size={20} />
             </a>
+          </div>
+          <div>
+            <Link href="/">
+              <Image
+                src="/images/logo_white.png"
+                alt="Bowl of noodles"
+                width={60}
+                height={135}
+                className="rounded-lg object-cover z-0 text-white"
+                style={{ maxHeight: '135px', maxWidth: '60px' }}
+              />
+            </Link>
           </div>
         </div>
       </div>
@@ -110,8 +123,8 @@ export default function Footer() {
           <Link href="/sitemap" className="hover:text-white">
             Plan du site
           </Link>
-          <span>Pour votre santé, mangez au moins cinq fruits et légumes par jour – www.mangerbouger.fr</span>
         </div>
+        <div>Pour votre santé, mangez au moins cinq fruits et légumes par jour – <Link href="https://www.mangerbouger.fr/">www.mangerbouger.fr</Link></div>
         <span>Tous droits réservés © Jim's 2025</span>
       </div>
     </footer>
