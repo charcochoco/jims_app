@@ -22,7 +22,7 @@ export default function Header() {
 
   return (
     <header className="font-body py-4 px-6 md:px-12 lg:px-24 flex justify-between items-center sticky top-0 z-50 bg-[#f5eede]/80 backdrop-blur-sm">
-      <div className="text-2xl font-bold font-title">
+      <div>
         <Link href="/">
           <Image
             src="/images/Logo.png"
