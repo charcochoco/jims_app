@@ -96,7 +96,7 @@ export default function Menu() {
             <main className="py-12 px-6 md:px-12 lg:px-24">
                 <div className="container mx-auto">
                     <h1 className="text-5xl md:text-7xl font-title font-bold text-brand-text text-center mb-6">
-                        Menu Jim&apos;s
+                        Les menus de Jim’s
                     </h1>
                     <hr className="border-t-2 border-brand-accent my-6" style={{ borderColor: '#d1742c' }} />
 
