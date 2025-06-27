@@ -206,9 +206,8 @@ export default function Menu() {
                         </div>
                     </div>
                 </div>
-
-                <Offers />
             </main>
+             <Offers />
             <CtaOrder />
         </>
     )
