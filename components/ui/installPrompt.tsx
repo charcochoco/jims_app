@@ -11,8 +11,8 @@ export default function InstallPrompt() {
   const [isInstalling, setIsInstalling] = useState(false)
 
   useEffect(() => {
-    const isDismissed = localStorage.getItem("pwaPromptDismissed") === "true"
-    if (isDismissed) return
+    // const isDismissed = localStorage.getItem("pwaPromptDismissed") === "true"
+    // if (isDismissed) return
 
     const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())
     const isInStandaloneMode = 'standalone' in window.navigator && window.navigator.standalone
